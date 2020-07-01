@@ -17,9 +17,7 @@ import {
   ThemeProvider,
   duration,
 } from '@material-ui/core/styles'
-import pin1 from '../images/pin1.svg'
-import pin2 from '../images/pin2.svg'
-import pin3 from '../images/pin3.svg'
+import { gear1, gear2, pin1, pin2, pin3, pin4 } from '../images'
 
 const hFonts = {
   fontFamily: "'EB Garamond', 'Helvetica', 'Arial', sans-serif",
@@ -95,8 +93,13 @@ const useStyles = makeStyles({
     marginLeft: 18,
     background: '#89251e',
   },
-  subtitle: {},
-  subtitleFont: {},
+  subtitle: {
+    marginTop: -34,
+    marginBottom: 20,
+  },
+  subtitleFont: {
+    color: theme.palette.primary.main,
+  },
   textBox: {
     marginTop: 44,
     marginBottom: 44,
@@ -115,13 +118,13 @@ const useStyles = makeStyles({
     marginBottom: 20,
   },
   fadeContainer: {
-    height: 180,
+    height: 220,
   },
   nameContainer: {
     display: 'flex',
     marginTop: -10,
     marginBottom: 10,
-    padding: '8px 40px',
+    padding: '30px 80px',
     background: theme.palette.primary.main,
     color: 'white',
     borderRadius: 8,
@@ -129,27 +132,39 @@ const useStyles = makeStyles({
   buttonGroup: {
     marginBottom: 20,
   },
-  minWidthButton: {
-    padding: '6px 4px',
+  backButton: {
+    padding: '4px 4px',
     marginLeft: 14,
     marginRight: 14,
     marginBottom: 8,
-    minWidth: 140,
+    width: 120,
+  },
+  nextButton: {
+    padding: '4px 4px',
+    marginLeft: 14,
+    marginRight: 14,
+    marginBottom: 8,
+    width: 180,
   },
   pinGroup: {},
   pin: {
+    width: 100,
+    height: 100,
     margin: '0 10px',
   },
   linkGroup: {
     marginTop: '30px',
   },
   linkFont: {
-    fontSize: '8px',
-    textDecoration: 'none',
+    fontSize: '14px',
+  },
+  link: {
+    textDecoration: 'underline',
+    color: theme.palette.primary.main,
   },
   gear1: {
     animation: '$rotation 3.5s infinite linear',
-    marginTop: -30,
+    marginTop: -10,
     marginLeft: 20,
     marginRight: -16,
     width: 70,
@@ -157,6 +172,7 @@ const useStyles = makeStyles({
   },
   gear2: {
     animation: '$rotationReverse 5s infinite linear',
+    marginTop: 20,
     width: 100,
     height: 100,
   },
@@ -232,7 +248,7 @@ const IndexPage = () => {
       <div style={{ overflow: 'hidden' }}>
         <Grid
           container
-          direction='row'
+          direction='column'
           justify='center'
           alignItems='center'
           spacing={3}
@@ -257,6 +273,12 @@ const IndexPage = () => {
               <div className={classes.dotRight}></div>
             </Grid>
           </Grid>
+          <Grid className={classes.subtitle}>
+            <Typography variant='body1' className={classes.subtitleFont}>
+              1600 Penn-isize me!
+            </Typography>
+          </Grid>
+
           <Grid container className={classes.fadeContainer}>
             <Fade
               in={step === 0}
@@ -396,7 +418,9 @@ const IndexPage = () => {
                   <div className={classes.nameContainer}>
                     <Typography variant='h3'>{get1600Name()}</Typography>
                   </div>
-                  <Typography variant='body2'>Your 1600 Penn name</Typography>
+                  <Typography style={{ marginTop: -4 }} variant='body2'>
+                    Your 1600 Penn name
+                  </Typography>
                 </Grid>
               </Grid>
             </Fade>
@@ -416,13 +440,13 @@ const IndexPage = () => {
                 >
                   <img
                     className={classes.gear1}
-                    src={pin2}
-                    alt='spinning gear 2'
+                    src={gear1}
+                    alt='spinning gear 1'
                   />
                   <img
                     className={classes.gear2}
-                    src={pin1}
-                    alt='spinning gear 1'
+                    src={gear2}
+                    alt='spinning gear 2'
                   />
                 </Grid>
                 <Grid container item xs={12} justify='center'>
@@ -442,20 +466,20 @@ const IndexPage = () => {
             spacing={5}
           >
             <Button
-              className={classes.minWidthButton}
+              className={classes.backButton}
               size='large'
               color='secondary'
-              variant='contained'
+              variant='outlined'
               disabled={step % 2 === 1 || step === 0}
               onClick={handleBack}
             >
               Back
             </Button>
             <Button
-              className={classes.minWidthButton}
+              className={classes.nextButton}
               size='large'
               color='primary'
-              variant='contained'
+              variant='outlined'
               disabled={step % 2 === 1 || (step === 0 && name === '')}
               onClick={handleNext}
             >
@@ -480,6 +504,7 @@ const IndexPage = () => {
               <img className={classes.pin} src={pin1} alt='pin 1' />
               <img className={classes.pin} src={pin2} alt='pin 2' />
               <img className={classes.pin} src={pin3} alt='pin 3' />
+              <img className={classes.pin} src={pin4} alt='pin 4' />
             </Grid>
           </Fade>
           <Grid
@@ -501,19 +526,27 @@ const IndexPage = () => {
               <span>
                 Questions? Watch the{' '}
                 <a
-                  className={classes.linkFont}
+                  className={classes.link}
                   href='https://twitter.com/GLucasTalkShow'
                 >
                   George Lucas Talk Show
                 </a>
               </span>
               <br />
-              <a
-                className={classes.linkFont}
-                href='https://github.com/mstubna/1600penn.me'
-              >
-                Source
-              </a>
+              <span>
+                <a className={classes.link} href='https://arliss.me'>
+                  Arli$$.me
+                </a>
+              </span>
+              <br />
+              <span>
+                <a
+                  className={classes.link}
+                  href='https://github.com/mstubna/1600penn.me'
+                >
+                  Source
+                </a>
+              </span>
             </Typography>
           </Grid>
         </Grid>
