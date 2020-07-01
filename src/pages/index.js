@@ -14,6 +14,7 @@ import {
 import {
   createMuiTheme,
   makeStyles,
+  responsiveFontSizes,
   ThemeProvider,
   duration,
 } from '@material-ui/core/styles'
@@ -22,7 +23,7 @@ import { gear1, gear2, pin1, pin2, pin3, pin4 } from '../images'
 const hFonts = {
   fontFamily: "'EB Garamond', 'Helvetica', 'Arial', sans-serif",
 }
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   typography: {
     fontSize: 14,
     fontFamily: "'Montserrat', 'Helvetica', 'Arial', sans-serif",
@@ -44,6 +45,8 @@ const theme = createMuiTheme({
     borderRadius: 8,
   },
 })
+
+theme = responsiveFontSizes(theme)
 
 const useStyles = makeStyles({
   '@keyframes rotation': {
@@ -109,13 +112,14 @@ const useStyles = makeStyles({
     marginBottom: 40,
   },
   slider: {},
-  smallSliderLabel: {
-    minWidth: 100,
-    marginBottom: 20,
-  },
-  sliderLabel: {
-    minWidth: 100,
-    marginBottom: 20,
+  sliderMark: {
+    fontSize: 14,
+    [theme.breakpoints.up('sm')]: {
+      fontSize: 20,
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: 24,
+    },
   },
   fadeContainer: {
     height: 220,
@@ -150,13 +154,16 @@ const useStyles = makeStyles({
   pin: {
     width: 100,
     height: 100,
-    margin: '0 10px',
+    margin: '0 10px 10px 10px',
   },
   linkGroup: {
     marginTop: '30px',
   },
   linkFont: {
-    fontSize: '14px',
+    fontSize: 10,
+    [theme.breakpoints.up('sm')]: {
+      fontSize: 14,
+    },
   },
   link: {
     textDecoration: 'underline',
@@ -307,7 +314,7 @@ const IndexPage = () => {
                 >
                   <TextField
                     fullWidth
-                    color='secondary'
+                    color='primary'
                     type='text'
                     variant='outlined'
                     value={name}
@@ -316,6 +323,7 @@ const IndexPage = () => {
                   <Typography
                     style={{ textAlign: 'center', marginTop: 10 }}
                     variant='body2'
+                    color='primary'
                   >
                     What's your name?
                   </Typography>
@@ -331,60 +339,51 @@ const IndexPage = () => {
               mountOnEnter
               unmountOnExit
             >
-              <>
+              <Grid
+                item
+                container
+                xs={12}
+                direction='row'
+                justify='center'
+                alignItems='center'
+              >
                 <Grid
                   className={classes.sliderContainer}
                   item
-                  xs={12}
+                  xs={9}
+                  sm={7}
+                  md={6}
+                  lg={4}
                   container
                   direction='row'
                   justify='center'
                   alignItems='center'
-                  spacing={5}
                 >
-                  <Grid item>
-                    <Typography
-                      className={classes.smallSliderLabel}
-                      variant='h5'
-                      align='right'
-                    >
-                      ⚖️
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    container
-                    direction='column'
-                    alignItems='center'
-                    className={classes.slider}
-                    item
-                    xs={5}
-                    md={4}
-                    xl={3}
+                  <Slider
+                    classes={{ markLabel: classes.sliderMark }}
+                    defaultValue={0}
+                    step={1}
+                    marks={[
+                      { value: 0, label: '' },
+                      { value: 1, label: '⚖️' },
+                      { value: 2, label: '⚖️🗳' },
+                      { value: 3, label: '⚖️🗳🏛' },
+                      { value: 4, label: '⚖️🗳🏛🇺🇸' },
+                    ]}
+                    min={0}
+                    max={4}
+                    value={political}
+                    onChange={handlePoliticalChange}
+                  />
+                  <Typography
+                    variant='body2'
+                    color='primary'
+                    style={{ marginTop: 16 }}
                   >
-                    <Slider
-                      defaultValue={0}
-                      step={1}
-                      marks
-                      min={0}
-                      max={4}
-                      value={political}
-                      onChange={handlePoliticalChange}
-                    />
-                    <Typography variant='body2' style={{ marginTop: 4 }}>
-                      How political are you?
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Typography
-                      className={classes.sliderLabel}
-                      variant='h5'
-                      align='center'
-                    >
-                      ⚖️🇺🇸🗳🏛
-                    </Typography>
-                  </Grid>
+                    How political are you?
+                  </Typography>
                 </Grid>
-              </>
+              </Grid>
             </Fade>
             <Fade
               in={step === 4}
@@ -418,7 +417,11 @@ const IndexPage = () => {
                   <div className={classes.nameContainer}>
                     <Typography variant='h3'>{get1600Name()}</Typography>
                   </div>
-                  <Typography style={{ marginTop: -4 }} variant='body2'>
+                  <Typography
+                    style={{ marginTop: -4 }}
+                    variant='body2'
+                    color='primary'
+                  >
                     Your 1600 Penn name
                   </Typography>
                 </Grid>
@@ -440,17 +443,21 @@ const IndexPage = () => {
                 >
                   <img
                     className={classes.gear1}
-                    src={gear1}
+                    src={gear2}
                     alt='spinning gear 1'
                   />
                   <img
                     className={classes.gear2}
-                    src={gear2}
+                    src={gear1}
                     alt='spinning gear 2'
                   />
                 </Grid>
                 <Grid container item xs={12} justify='center'>
-                  <Typography variant='body2' style={{ marginTop: -16 }}>
+                  <Typography
+                    variant='body2'
+                    color='primary'
+                    style={{ marginTop: -16 }}
+                  >
                     {workingText}
                   </Typography>
                 </Grid>
@@ -488,7 +495,7 @@ const IndexPage = () => {
           </Grid>
           <Fade
             in={step === 4}
-            timeout={{ enter: duration.enteringScreen, exit: 0 }}
+            timeout={{ enter: 7 * duration.enteringScreen, exit: 0 }}
             mountOnEnter
             unmountOnExit
           >
