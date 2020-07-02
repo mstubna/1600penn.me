@@ -20,7 +20,7 @@ import {
   duration,
 } from '@material-ui/core/styles'
 import { gear1, gear2, pin1, pin2, pin3, pin4 } from '../images'
-import parsedText from '../parsed_text_150.json'
+import parsedText from '../parsed_text.json'
 
 const hFonts = {
   fontFamily: "'EB Garamond', 'Helvetica', 'Arial', sans-serif",
@@ -136,6 +136,9 @@ const useStyles = makeStyles({
   },
   randomText: {
     borderColor: theme.palette.primary.light,
+    [theme.breakpoints.up('sm')]: {
+      width: 500,
+    },
     borderWidth: 2,
     borderStyle: 'solid',
     padding: 10,
@@ -208,12 +211,14 @@ let i = -1
 const _parsedText = shuffle(parsedText.data)
 const getRandomText = () => {
   i = i + 1
-  if (i >= _parsedText.length) { i = i - _parsedText.length }
+  if (i >= _parsedText.length) {
+    i = i - _parsedText.length
+  }
   return _parsedText[i]
 }
 
 const normalDist1 = randomNormal(0.15, 0.05)
-const normalDist2 = randomNormal(0.5, 0.15)
+const normalDist2 = randomNormal(0.35, 0.15)
 
 const getRandomDelay = (dist) => {
   return Math.max(500, Math.floor(dist() * 10000))
@@ -251,11 +256,13 @@ const IndexPage = () => {
   }
 
   const handleNext = () => {
+    if (step === 2) {
+      setRandomText(getRandomText())
+    }
     if (step === 4) {
       handleReset()
       return
     }
-    setRandomText(getRandomText())
     setStep(step + 1)
     const delay = getRandomDelay(step === 0 ? normalDist1 : normalDist2)
     if (step === 2 && delay > 1000) {
@@ -457,10 +464,10 @@ const IndexPage = () => {
                   justify='center'
                   alignItems='center'
                 >
-                  <Typography variant='body2' color='primary'>
+                  <Typography variant='body2' color='primary' align='center'>
                     <i>Your exclusive</i> 1600 Penn season 2 teaser{' '}
                     <Button
-                      title='Ask the robot for more'
+                      title='Thank you robot, may I have another?'
                       onClick={handleRefreshRandomText}
                     >
                       🔄🤖

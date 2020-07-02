@@ -7,4 +7,7 @@ const chunks = file
   .map((chunk) => chunk.trim())
   .filter((chunk) => chunk.length > 0)
 
-fs.writeFileSync('../parsed_text.json', JSON.stringify({ data: chunks }))
+fs.writeFileSync(
+  '../parsed_text.json',
+  JSON.stringify({ data: chunks }, null, '\t')
+)
