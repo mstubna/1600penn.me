@@ -2,6 +2,7 @@
 import 'typeface-montserrat'
 import 'typeface-eb-garamond'
 import { randomNormal } from 'd3-random'
+import shuffle from 'lodash/shuffle'
 import React, { useState, useEffect, useRef } from 'react'
 import {
   Button,
@@ -19,6 +20,7 @@ import {
   duration,
 } from '@material-ui/core/styles'
 import { gear1, gear2, pin1, pin2, pin3, pin4 } from '../images'
+import parsedText from '../parsed_text_150.json'
 
 const hFonts = {
   fontFamily: "'EB Garamond', 'Helvetica', 'Arial', sans-serif",
@@ -122,16 +124,24 @@ const useStyles = makeStyles({
     },
   },
   fadeContainer: {
-    height: 220,
+    minHeight: 240,
   },
   nameContainer: {
     display: 'flex',
-    marginTop: -10,
     marginBottom: 10,
     padding: '30px 80px',
     background: theme.palette.primary.main,
     color: 'white',
     borderRadius: 8,
+  },
+  randomText: {
+    borderColor: theme.palette.primary.light,
+    borderWidth: 2,
+    borderStyle: 'solid',
+    padding: 10,
+    marginBottom: 40,
+    borderRadius: 8,
+    whiteSpace: 'pre-line',
   },
   buttonGroup: {
     marginBottom: 20,
@@ -162,7 +172,7 @@ const useStyles = makeStyles({
   linkFont: {
     fontSize: 10,
     [theme.breakpoints.up('sm')]: {
-      fontSize: 14,
+      fontSize: 12,
     },
   },
   link: {
@@ -194,6 +204,14 @@ const usePrevious = (value) => {
   return ref.current
 }
 
+let i = -1
+const _parsedText = shuffle(parsedText.data)
+const getRandomText = () => {
+  i = i + 1
+  if (i >= _parsedText.length) { i = i - _parsedText.length }
+  return _parsedText[i]
+}
+
 const normalDist1 = randomNormal(0.15, 0.05)
 const normalDist2 = randomNormal(0.5, 0.15)
 
@@ -208,6 +226,7 @@ const IndexPage = () => {
   const [name, setName] = useState('')
   const [workingText, setWorkingText] = useState('Working...')
   const [political, setPolitical] = useState(0)
+  const [randomText, setRandomText] = useState('')
 
   const handleNameChange = (e) => {
     setName(e.target.value)
@@ -236,6 +255,7 @@ const IndexPage = () => {
       handleReset()
       return
     }
+    setRandomText(getRandomText())
     setStep(step + 1)
     const delay = getRandomDelay(step === 0 ? normalDist1 : normalDist2)
     if (step === 2 && delay > 1000) {
@@ -243,6 +263,10 @@ const IndexPage = () => {
       setTimeout(() => setWorkingText('Working...'), delay)
     }
     setTimeout(() => setStep(step + 2), delay)
+  }
+
+  const handleRefreshRandomText = () => {
+    setRandomText(getRandomText())
   }
 
   const get1600Name = () => {
@@ -312,6 +336,13 @@ const IndexPage = () => {
                   md={6}
                   lg={5}
                 >
+                  <Typography
+                    style={{ textAlign: 'center', marginBottom: 10 }}
+                    variant='body2'
+                    color='primary'
+                  >
+                    What's your name?
+                  </Typography>
                   <TextField
                     fullWidth
                     color='primary'
@@ -320,13 +351,6 @@ const IndexPage = () => {
                     value={name}
                     onChange={handleNameChange}
                   />
-                  <Typography
-                    style={{ textAlign: 'center', marginTop: 10 }}
-                    variant='body2'
-                    color='primary'
-                  >
-                    What's your name?
-                  </Typography>
                 </Grid>
               </Grid>
             </Fade>
@@ -359,6 +383,13 @@ const IndexPage = () => {
                   justify='center'
                   alignItems='center'
                 >
+                  <Typography
+                    variant='body2'
+                    color='primary'
+                    style={{ marginBottom: 16 }}
+                  >
+                    How political are you?
+                  </Typography>
                   <Slider
                     classes={{ markLabel: classes.sliderMark }}
                     defaultValue={0}
@@ -375,13 +406,6 @@ const IndexPage = () => {
                     value={political}
                     onChange={handlePoliticalChange}
                   />
-                  <Typography
-                    variant='body2'
-                    color='primary'
-                    style={{ marginTop: 16 }}
-                  >
-                    How political are you?
-                  </Typography>
                 </Grid>
               </Grid>
             </Fade>
@@ -397,7 +421,7 @@ const IndexPage = () => {
               <Grid
                 item
                 container
-                direction='column'
+                direction='row'
                 justify='center'
                 alignItems='center'
                 xs={12}
@@ -414,15 +438,36 @@ const IndexPage = () => {
                   md={6}
                   lg={5}
                 >
-                  <div className={classes.nameContainer}>
-                    <Typography variant='h3'>{get1600Name()}</Typography>
-                  </div>
                   <Typography
-                    style={{ marginTop: -4 }}
+                    style={{ marginBottom: 10 }}
                     variant='body2'
                     color='primary'
                   >
                     Your 1600 Penn name
+                  </Typography>
+                  <div className={classes.nameContainer}>
+                    <Typography variant='h3'>{get1600Name()}</Typography>
+                  </div>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  xs={10}
+                  direction='column'
+                  justify='center'
+                  alignItems='center'
+                >
+                  <Typography variant='body2' color='primary'>
+                    <i>Your exclusive</i> 1600 Penn season 2 teaser{' '}
+                    <Button
+                      title='Ask the robot for more'
+                      onClick={handleRefreshRandomText}
+                    >
+                      🔄🤖
+                    </Button>
+                  </Typography>
+                  <Typography className={classes.randomText}>
+                    {randomText}
                   </Typography>
                 </Grid>
               </Grid>
@@ -433,13 +478,25 @@ const IndexPage = () => {
               mountOnEnter
               unmountOnExit
             >
-              <Grid container item direction='row' xs={12}>
+              <Grid
+                container
+                item
+                direction='row'
+                xs={12}
+                style={{ marginTop: 20 }}
+              >
+                <Grid container item xs={12} justify='center'>
+                  <Typography variant='body2' color='primary'>
+                    {workingText}
+                  </Typography>
+                </Grid>
                 <Grid
                   container
                   item
                   xs={12}
                   justify='center'
                   alignContent='center'
+                  style={{ marginTop: -100 }}
                 >
                   <img
                     className={classes.gear1}
@@ -451,15 +508,6 @@ const IndexPage = () => {
                     src={gear1}
                     alt='spinning gear 2'
                   />
-                </Grid>
-                <Grid container item xs={12} justify='center'>
-                  <Typography
-                    variant='body2'
-                    color='primary'
-                    style={{ marginTop: -16 }}
-                  >
-                    {workingText}
-                  </Typography>
                 </Grid>
               </Grid>
             </Fade>
@@ -476,7 +524,7 @@ const IndexPage = () => {
               className={classes.backButton}
               size='large'
               color='secondary'
-              variant='outlined'
+              variant='text'
               disabled={step % 2 === 1 || step === 0}
               onClick={handleBack}
             >
@@ -486,7 +534,7 @@ const IndexPage = () => {
               className={classes.nextButton}
               size='large'
               color='primary'
-              variant='outlined'
+              variant='text'
               disabled={step % 2 === 1 || (step === 0 && name === '')}
               onClick={handleNext}
             >
