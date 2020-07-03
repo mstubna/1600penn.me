@@ -4,6 +4,7 @@ import 'typeface-eb-garamond'
 import { randomNormal } from 'd3-random'
 import shuffle from 'lodash/shuffle'
 import React, { useState, useEffect, useRef } from 'react'
+import { Helmet } from 'react-helmet'
 import {
   Button,
   Grid,
@@ -89,14 +90,14 @@ const useStyles = makeStyles({
     height: 10,
     borderRadius: 10,
     marginRight: 18,
-    background: '#89251e',
+    background: '#C1242B',
   },
   dotRight: {
     width: 10,
     height: 10,
     borderRadius: 10,
     marginLeft: 18,
-    background: '#89251e',
+    background: '#C1242B',
   },
   subtitle: {
     marginTop: -34,
@@ -283,6 +284,17 @@ const IndexPage = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <Helmet>
+        <title>1600Penn.me</title>
+        <meta property='og:title' content='1600Penn.me' />
+        <meta property='og:description' content='1600 Penn name generator' />
+        <meta property='og:image' content={pin1} />
+        <meta property='og:url' content='https://1600penn.me' />
+        <meta name='twitter:title' content='1600Penn.me' />
+        <meta name='twitter:description' content='1600 Penn name generator' />
+        <meta name='twitter:image' content={pin1} />
+        <meta name='twitter:card' content={pin1} />
+      </Helmet>
       <div style={{ overflow: 'hidden' }}>
         <Grid
           container
