@@ -19,5 +19,17 @@ module.exports = {
         bucketName: '1600penn.me',
       },
     },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `1600Penn.me`,
+        short_name: `1600Penn.me`,
+        start_url: `/`,
+        background_color: `#0A3A69`,
+        theme_color: `#0A3A69`,
+        display: `minimal-ui`,
+        icon: `src/images/pin1.png`,
+      },
+    },
   ],
 }
