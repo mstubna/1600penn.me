@@ -2,7 +2,6 @@
 import 'typeface-montserrat'
 import 'typeface-eb-garamond'
 import { randomNormal } from 'd3-random'
-import shuffle from 'lodash/shuffle'
 import React, { useState, useEffect, useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import {
@@ -21,7 +20,6 @@ import {
   duration,
 } from '@material-ui/core/styles'
 import { gear1, gear2, pin1, pin2, pin3, pin4 } from '../images'
-import parsedText from '../parsed_text.json'
 
 const hFonts = {
   fontFamily: "'EB Garamond', 'Helvetica', 'Arial', sans-serif",
@@ -130,22 +128,8 @@ const useStyles = makeStyles({
   nameContainer: {
     display: 'flex',
     marginBottom: 10,
-    padding: '30px 80px',
-    background: theme.palette.primary.main,
-    color: 'white',
+    color: theme.palette.primary.main,
     borderRadius: 8,
-  },
-  randomText: {
-    borderColor: theme.palette.primary.light,
-    [theme.breakpoints.up('sm')]: {
-      width: 500,
-    },
-    borderWidth: 2,
-    borderStyle: 'solid',
-    padding: 10,
-    marginBottom: 40,
-    borderRadius: 8,
-    whiteSpace: 'pre-line',
   },
   buttonGroup: {
     marginBottom: 20,
@@ -208,16 +192,6 @@ const usePrevious = (value) => {
   return ref.current
 }
 
-let i = -1
-const _parsedText = shuffle(parsedText.data)
-const getRandomText = () => {
-  i = i + 1
-  if (i >= _parsedText.length) {
-    i = i - _parsedText.length
-  }
-  return _parsedText[i]
-}
-
 const normalDist1 = randomNormal(0.15, 0.05)
 const normalDist2 = randomNormal(0.35, 0.15)
 
@@ -232,7 +206,6 @@ const IndexPage = () => {
   const [name, setName] = useState('')
   const [workingText, setWorkingText] = useState('Working...')
   const [political, setPolitical] = useState(0)
-  const [randomText, setRandomText] = useState('')
 
   const handleNameChange = (e) => {
     setName(e.target.value)
@@ -257,9 +230,6 @@ const IndexPage = () => {
   }
 
   const handleNext = () => {
-    if (step === 2) {
-      setRandomText(getRandomText())
-    }
     if (step === 4) {
       handleReset()
       return
@@ -271,10 +241,6 @@ const IndexPage = () => {
       setTimeout(() => setWorkingText('Working...'), delay)
     }
     setTimeout(() => setStep(step + 2), delay)
-  }
-
-  const handleRefreshRandomText = () => {
-    setRandomText(getRandomText())
   }
 
   const get1600Name = () => {
@@ -462,32 +428,11 @@ const IndexPage = () => {
                     variant='body2'
                     color='primary'
                   >
-                    Your 1600 Penn name
+                    Your 1600 Penn name is
                   </Typography>
                   <div className={classes.nameContainer}>
-                    <Typography variant='h3'>{get1600Name()}</Typography>
+                    <Typography variant='h2'>{get1600Name()}</Typography>
                   </div>
-                </Grid>
-                <Grid
-                  item
-                  container
-                  xs={10}
-                  direction='column'
-                  justify='center'
-                  alignItems='center'
-                >
-                  <Typography variant='body2' color='primary' align='center'>
-                    <i>Your exclusive</i> 1600 Penn season 2 teaser{' '}
-                    <Button
-                      title='Thank you robot, may I have another?'
-                      onClick={handleRefreshRandomText}
-                    >
-                      🔄🤖
-                    </Button>
-                  </Typography>
-                  <Typography className={classes.randomText}>
-                    {randomText}
-                  </Typography>
                 </Grid>
               </Grid>
             </Fade>
