@@ -131,6 +131,9 @@ const useStyles = makeStyles({
     color: theme.palette.primary.main,
     borderRadius: 8,
   },
+  name: {
+    fontWeight: 600,
+  },
   buttonGroup: {
     marginBottom: 20,
   },
@@ -431,7 +434,9 @@ const IndexPage = () => {
                     Your 1600 Penn name is
                   </Typography>
                   <div className={classes.nameContainer}>
-                    <Typography variant='h2'>{get1600Name()}</Typography>
+                    <Typography className={classes.name} variant='h2'>
+                      {get1600Name()}
+                    </Typography>
                   </div>
                 </Grid>
               </Grid>
@@ -446,10 +451,11 @@ const IndexPage = () => {
                 container
                 item
                 direction='row'
+                alignItems='flex-start'
                 xs={12}
                 style={{ marginTop: 20 }}
               >
-                <Grid container item xs={12} justify='center'>
+                <Grid container item xs={12} justify='center' spacing={0}>
                   <Typography variant='body2' color='primary'>
                     {workingText}
                   </Typography>
@@ -460,7 +466,8 @@ const IndexPage = () => {
                   xs={12}
                   justify='center'
                   alignContent='center'
-                  style={{ marginTop: -100 }}
+                  style={{ marginTop: -40 }}
+                  spacing={0}
                 >
                   <img
                     className={classes.gear1}
@@ -554,7 +561,7 @@ const IndexPage = () => {
               <br />
               <span>
                 <a className={classes.link} href='https://arliss.me'>
-                  Arli$$.me
+                  Arliss.me
                 </a>
               </span>
               <br />
